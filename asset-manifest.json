@@ -1,22 +1,22 @@
 {
   "files": {
-    "app.js": "/SWWeb/static/js/app.8aab10ea.chunk.js",
-    "app.js.map": "/SWWeb/static/js/app.8aab10ea.chunk.js.map",
+    "app.js": "/SWWeb/static/js/app.a1ca5586.chunk.js",
+    "app.js.map": "/SWWeb/static/js/app.a1ca5586.chunk.js.map",
     "runtime~app.js": "/SWWeb/static/js/runtime~app.304c378e.js",
     "runtime~app.js.map": "/SWWeb/static/js/runtime~app.304c378e.js.map",
-    "static/js/2.00d41080.chunk.js": "/SWWeb/static/js/2.00d41080.chunk.js",
-    "static/js/2.00d41080.chunk.js.map": "/SWWeb/static/js/2.00d41080.chunk.js.map",
+    "static/js/2.d1835489.chunk.js": "/SWWeb/static/js/2.d1835489.chunk.js",
+    "static/js/2.d1835489.chunk.js.map": "/SWWeb/static/js/2.d1835489.chunk.js.map",
     "favicon-16.png": "/SWWeb/favicon-16.png",
     "favicon-32.png": "/SWWeb/favicon-32.png",
     "favicon.ico": "/SWWeb/favicon.ico",
     "index.html": "/SWWeb/index.html",
     "manifest.json": "/SWWeb/manifest.json",
     "serve.json": "/SWWeb/serve.json",
-    "static/js/2.00d41080.chunk.js.LICENSE.txt": "/SWWeb/static/js/2.00d41080.chunk.js.LICENSE.txt"
+    "static/js/2.d1835489.chunk.js.LICENSE.txt": "/SWWeb/static/js/2.d1835489.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime~app.304c378e.js",
-    "static/js/2.00d41080.chunk.js",
-    "static/js/app.8aab10ea.chunk.js"
+    "static/js/2.d1835489.chunk.js",
+    "static/js/app.a1ca5586.chunk.js"
   ]
 }
