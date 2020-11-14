@@ -266,7 +266,7 @@ class App extends React.Component {
     return (
       <View style={styles.container}>
         <View style = {styles.imageContainer}>
-        <TouchableNativeFeedback
+        <TouchableHighlight
           onPress = {()=>{this.incFirstFreq()}}>
           <Image
             fadeDuration = {1000}
@@ -274,9 +274,9 @@ class App extends React.Component {
               uri: "https://swarfarm.com/static/herders/images/monsters/" + this.state.firstMonImg,
             }}
             style={{ width: 128, height: 128 }}/>
-          </TouchableNativeFeedback>
+          </TouchableHighlight>
         <Text> vs. </Text>
-        <TouchableNativeFeedback
+        <TouchableHighlight
           onPress = {()=>{this.incSecondFreq()}}>
           <Image
             fadeDuration = {1000}
@@ -284,7 +284,7 @@ class App extends React.Component {
               uri: "https://swarfarm.com/static/herders/images/monsters/" + this.state.secondMonImg,
             }}
             style={{ width: 128, height: 128 }}/>
-          </TouchableNativeFeedback>
+          </TouchableHighlight>
         </View>
         <View style = {styles.imageContainer}>
           <Text>{firstMonFreq}</Text>
