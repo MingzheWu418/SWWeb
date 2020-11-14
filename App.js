@@ -107,7 +107,7 @@ function writeSecondMon(firstMonId, secondMonId, firstMonFreq, secondMonFreq) {
   var updates = {};
   updates['/Monsters/results/' + firstMonId + '/secondMon/' + secondMonId] = secondMonData;
   // updates['/user-posts/' + uid + '/' + newPostKey] = postData;
-  if(firstMonId<secondMonId){
+  if(firstMonId < secondMonId){
     return firebase.database().ref().update(updates);
   }
   else{
@@ -131,24 +131,33 @@ class App extends React.Component {
       secondMonFreq : 0,
       numMon : 97,
       allMonPage : "https://swarfarm.com/api/bestiary",
-      monsterPage : "https://swarfarm.com/api/v2/monsters/?id__in=&com2us_id=&family_id=&base_stars=6&base_stars__lte=&base_stars__gte=&natural_stars=5&natural_stars__lte=&natural_stars__gte=&obtainable=&fusion_food=&homunculus=false&name=&element=pure&element=fire&element=wind&element=water&awaken_level=1&order_by="
-
+      monsterPage : "https://swarfarm.com/api/v2/monsters/?id__in=&com2us_id=&family_id=&base_stars=6&base_stars__lte=&base_stars__gte=&natural_stars=5&natural_stars__lte=&natural_stars__gte=&obtainable=&fusion_food=&homunculus=false&name=&element=pure&element=fire&element=wind&element=water&awaken_level=1&order_by=",
+      pressed : false
     }
   }
 
     incFirstFreq(){
       // alert("TouchableTouched");
-      this.setState({firstMonFreq : this.state.firstMonFreq+1})
+      if(!this.state.pressed){
+
+        this.setState({pressed: true, firstMonFreq : this.state.firstMonFreq+1})
       // alert(this.state.firstMonFreq)
-      updateFreq(this.state.firstMonId, this.state.secondMonId, this.state.firstMonFreq+1, this.state.secondMonFreq);
+        updateFreq(this.state.firstMonId, this.state.secondMonId, this.state.firstMonFreq+1, this.state.secondMonFreq);
+
+
+      }
     }
 
     incSecondFreq(){
-      this.setState({secondMonFreq : this.state.secondMonFreq+1})
-      updateFreq(this.state.firstMonId, this.state.secondMonId, this.state.firstMonFreq, this.state.secondMonFreq+1);
+
+      if(!this.state.pressed){
+        this.setState({pressed: true, secondMonFreq : this.state.secondMonFreq+1})
+        updateFreq(this.state.firstMonId, this.state.secondMonId, this.state.firstMonFreq, this.state.secondMonFreq+1);
+      }
     }
 
     updateMonster(numMon, url){
+      this.setState({pressed : false});
       const invalidFamily = [19200, 17100, 24600, 23600, 24100, 24200, 24000];
       const invalidIndividuals = [13813, 14511, 21212, 22612];
       //TODO: store back into database
