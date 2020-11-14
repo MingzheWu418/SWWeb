@@ -19,7 +19,7 @@ const firebaseConfig = {
 firebase.default.initializeApp(firebaseConfig);
 let db = firebase.default.database();
 
-//
+
 // function writeMonsterData(com2us_id, name, imgUrl) {
 //   firebase.database().ref('Monsters/' + com2us_id).set({
 //     name: name,
@@ -48,10 +48,20 @@ let db = firebase.default.database();
 //   return newClicks;
 // }
 
+// var freqList = {};
+
+function setInitFreq(frequency){
+  // var s = JSON.stringify(frequency);
+  // var d = JSON.parse(s);
+  freqList = frequency;
+  // alert(JSON.stringify(currFreq))
+}
+
 
 function getFreq(firstMonId, secondMonId){
     var firstFreq = 0;
     var secondFreq = 0;
+    // var freqList = {};
     if(firstMonId < secondMonId){
       var firstFreqCount = firebase.database().ref('/Monsters/results/' + firstMonId + '/secondMon/' + secondMonId + '/firstFreq/');
       var secondFreqCount = firebase.database().ref('/Monsters/results/' + firstMonId + '/secondMon/' + secondMonId + '/secondFreq/');
@@ -72,6 +82,10 @@ function getFreq(firstMonId, secondMonId){
         firstFreq = frequency;
       });
     }
+
+    // firstFreq = freqList.firstFreq;
+    // secondFreq = freqList.secondFreq;
+    alert(JSON.stringify([firstFreq, secondFreq]))
 
     return [firstFreq, secondFreq];
 }
@@ -107,7 +121,7 @@ function writeSecondMon(firstMonId, secondMonId, firstMonFreq, secondMonFreq) {
   var updates = {};
   updates['/Monsters/results/' + firstMonId + '/secondMon/' + secondMonId] = secondMonData;
   // updates['/user-posts/' + uid + '/' + newPostKey] = postData;
-  if(firstMonId<secondMonId){
+  if(firstMonId < secondMonId){
     return firebase.database().ref().update(updates);
   }
   else{
@@ -117,7 +131,7 @@ function writeSecondMon(firstMonId, secondMonId, firstMonFreq, secondMonFreq) {
 }
 
 
-class App extends React.Component {
+class MainPage extends React.Component {
     constructor(props){
     super(props);
     this.state = {
@@ -131,31 +145,40 @@ class App extends React.Component {
       secondMonFreq : 0,
       numMon : 97,
       allMonPage : "https://swarfarm.com/api/bestiary",
-      monsterPage : "https://swarfarm.com/api/v2/monsters/?id__in=&com2us_id=&family_id=&base_stars=6&base_stars__lte=&base_stars__gte=&natural_stars=5&natural_stars__lte=&natural_stars__gte=&obtainable=&fusion_food=&homunculus=false&name=&element=pure&element=fire&element=wind&element=water&awaken_level=1&order_by="
-
+      monsterPage : "https://swarfarm.com/api/v2/monsters/?id__in=&com2us_id=&family_id=&base_stars=6&base_stars__lte=&base_stars__gte=&natural_stars=5&natural_stars__lte=&natural_stars__gte=&obtainable=&fusion_food=&homunculus=false&name=&element=pure&element=fire&element=wind&element=water&awaken_level=1&order_by=",
+      pressed : false
     }
   }
 
     incFirstFreq(){
       // alert("TouchableTouched");
-      this.setState({firstMonFreq : this.state.firstMonFreq+1})
+      if(!this.state.pressed){
+
+        this.setState({pressed: true, firstMonFreq : this.state.firstMonFreq+1})
       // alert(this.state.firstMonFreq)
-      updateFreq(this.state.firstMonId, this.state.secondMonId, this.state.firstMonFreq+1, this.state.secondMonFreq);
+        updateFreq(this.state.firstMonId, this.state.secondMonId, this.state.firstMonFreq+1, this.state.secondMonFreq);
+
+
+      }
     }
 
     incSecondFreq(){
-      this.setState({secondMonFreq : this.state.secondMonFreq+1})
-      updateFreq(this.state.firstMonId, this.state.secondMonId, this.state.firstMonFreq, this.state.secondMonFreq+1);
+
+      if(!this.state.pressed){
+        this.setState({pressed: true, secondMonFreq : this.state.secondMonFreq+1})
+        updateFreq(this.state.firstMonId, this.state.secondMonId, this.state.firstMonFreq, this.state.secondMonFreq+1);
+      }
     }
 
     updateMonster(numMon, url){
+      this.setState({pressed : false});
       const invalidFamily = [19200, 17100, 24600, 23600, 24100, 24200, 24000];
       const invalidIndividuals = [13813, 14511, 21212, 22612];
       //TODO: store back into database
-      var firstRandNum = Math.floor(Math.random() * numMon);
-      var secondRandNum = Math.floor(Math.random() * numMon);
-      // var firstRandNum = 75;
-      // var secondRandNum = 91;
+      // var firstRandNum = Math.floor(Math.random() * numMon);
+      // var secondRandNum = Math.floor(Math.random() * numMon);
+      var firstRandNum = 75;
+      var secondRandNum = 91;
       while(secondRandNum == firstRandNum){
         secondRandNum = Math.floor(Math.random() * numMon);
       }
@@ -175,13 +198,12 @@ class App extends React.Component {
           var freq = getFreq(firstRandNum, secondRandNum);
           var s = JSON.stringify(freq);
           var d = JSON.parse(s);
+          // alert(s)
           if(firstRandNum < secondRandNum){
             this.setState({firstMonFreq : d[0], secondMonFreq: d[1]})
-
           }
           else{
             this.setState({firstMonFreq : d[1], secondMonFreq: d[0]})
-
           }
           var firstMon = data.results[firstRandNum]
           var secondMon = data.results[secondRandNum]
@@ -292,4 +314,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+export default MainPage;
