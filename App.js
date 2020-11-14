@@ -151,6 +151,7 @@ class App extends React.Component {
     //TODO: Fetch from database
 
     incFirstFreq(){
+      alert("TouchableTouched");
       this.setState({firstMonFreq : this.state.firstMonFreq+1})
       // alert(this.state.firstMonFreq)
       updateFreq(this.state.firstMonId, this.state.secondMonId, this.state.firstMonFreq+1, this.state.secondMonFreq);
