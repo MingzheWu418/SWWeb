@@ -161,10 +161,10 @@ class App extends React.Component {
       const invalidFamily = [19200, 17100, 24600, 23600, 24100, 24200, 24000];
       const invalidIndividuals = [13813, 14511, 21212, 22612];
       //TODO: store back into database
-      var firstRandNum = Math.floor(Math.random() * numMon);
-      var secondRandNum = Math.floor(Math.random() * numMon);
-      // var firstRandNum = 75;
-      // var secondRandNum = 91;
+      // var firstRandNum = Math.floor(Math.random() * numMon);
+      // var secondRandNum = Math.floor(Math.random() * numMon);
+      var firstRandNum = 75;
+      var secondRandNum = 91;
       while(secondRandNum == firstRandNum){
         secondRandNum = Math.floor(Math.random() * numMon);
       }
