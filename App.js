@@ -4,9 +4,6 @@ import { StyleSheet, Text, View, Image, TouchableNativeFeedback, TouchableHighli
 import firebase from '@firebase/app';
 import "@firebase/database";
 
-// import database from "firebase";
-
-// var firebase = require("firebase/app");
 const firebaseConfig = {
     apiKey: "AIzaSyCs5AfLDY0g9306B1yp7W1DzDj2wJkhwqo",
     authDomain: "swweb-f7b67.firebaseapp.com",
@@ -17,18 +14,11 @@ const firebaseConfig = {
     appId: "1:624196455015:web:a6b40fdb25701eb7a7a2c2",
     measurementId: "G-549CBLCS3L"
   };
+
   // Initialize Firebase
-// if (!firebase.apps.length) {
-// var firebase.initializeApp(firebaseConfig);
-// }
-
-
 firebase.default.initializeApp(firebaseConfig);
 let db = firebase.default.database();
 
-function testUpdateFreq(newFreq){
-  return newFreq;
-}
 //
 // function writeMonsterData(com2us_id, name, imgUrl) {
 //   firebase.database().ref('Monsters/' + com2us_id).set({
@@ -43,6 +33,22 @@ function testUpdateFreq(newFreq){
 //   });
 // }
 
+// function updateClick(){
+//   var updates = {};
+//   var newClicks = 0;
+//   var clickUpdater = firebase.database().ref('/totalClicks');
+//   clickUpdater.on('value', function(clicks){
+//
+//     // alert(JSON.stringify(clicks));
+//     newClicks = JSON.stringify(clicks)
+//   });
+//   updates['/totalClicks'] = newClicks;
+//   firebase.database().ref().update(updates);
+//   alert(newClicks)
+//   return newClicks;
+// }
+
+
 function getFreq(firstMonId, secondMonId){
     var firstFreq = 0;
     var secondFreq = 0;
@@ -50,34 +56,24 @@ function getFreq(firstMonId, secondMonId){
       var firstFreqCount = firebase.database().ref('/Monsters/results/' + firstMonId + '/secondMon/' + secondMonId + '/firstFreq/');
       var secondFreqCount = firebase.database().ref('/Monsters/results/' + firstMonId + '/secondMon/' + secondMonId + '/secondFreq/');
       firstFreqCount.on('value', function(frequency) {
-        // alert(JSON.stringify(frequency))
         firstFreq = frequency;
-        // secondFreq = frequency.secondFreq;
       });
       secondFreqCount.on('value', function(frequency) {
-        // alert(JSON.stringify(frequency))
         secondFreq = frequency;
-        // secondFreq = frequency.secondFreq;
       });
     }
     else if(firstMonId > secondMonId){
       var firstFreqCount = firebase.database().ref('/Monsters/results/' + secondMonId + '/secondMon/' + firstMonId + '/firstFreq/');
       var secondFreqCount = firebase.database().ref('/Monsters/results/' + secondMonId + '/secondMon/' + firstMonId + '/secondFreq/');
       firstFreqCount.on('value', function(frequency) {
-        // alert(JSON.stringify(frequency))
         secondFreq = frequency;
-        // secondFreq = frequency.secondFreq;
       });
       secondFreqCount.on('value', function(frequency) {
-        // alert(JSON.stringify(frequency))
         firstFreq = frequency;
-        // secondFreq = frequency.secondFreq;
       });
     }
-    // alert(JSON.stringify(firstFreq.val()+ ", "+ secondFreq.val()))
 
     return [firstFreq, secondFreq];
-    // alert(JSON.stringify(currFreq))
 }
 
 function updateFreq(firstMonId, secondMonId, newFirstFreq, newSecondFreq){
@@ -89,7 +85,6 @@ function updateFreq(firstMonId, secondMonId, newFirstFreq, newSecondFreq){
       secondFreq: newSecondFreq
     }
     updates['/Monsters/results/' + firstMonId + '/secondMon/' + secondMonId] = newFreqData;
-    // updates['/user-posts/' + uid + '/' + newPostKey] = postData;
   }
   else if(firstMonId > secondMonId){
     var newFreqData = {
@@ -97,9 +92,7 @@ function updateFreq(firstMonId, secondMonId, newFirstFreq, newSecondFreq){
       secondFreq: newFirstFreq
     }
     updates['/Monsters/results/' + secondMonId + '/secondMon/' + firstMonId] = newFreqData;
-    // updates['/user-posts/' + uid + '/' + newPostKey] = postData;
   }
-  // alert(JSON.stringify(updates));
   firebase.database().ref().update(updates);
 }
 
@@ -109,9 +102,6 @@ function writeSecondMon(firstMonId, secondMonId, firstMonFreq, secondMonFreq) {
     firstFreq: firstMonFreq,
     secondFreq: secondMonFreq
   };
-
-  // Get a key for a new Post.
-  // var newPostKey = firebase.database().ref().child('posts').push().key;
 
   // Write the new post's data simultaneously in the posts list and the user's post list.
   var updates = {};
@@ -126,8 +116,6 @@ function writeSecondMon(firstMonId, secondMonId, firstMonFreq, secondMonFreq) {
   }
 }
 
-
-// let db = firebase.firestore();
 
 class App extends React.Component {
     constructor(props){
@@ -145,10 +133,8 @@ class App extends React.Component {
       allMonPage : "https://swarfarm.com/api/bestiary",
       monsterPage : "https://swarfarm.com/api/v2/monsters/?id__in=&com2us_id=&family_id=&base_stars=6&base_stars__lte=&base_stars__gte=&natural_stars=5&natural_stars__lte=&natural_stars__gte=&obtainable=&fusion_food=&homunculus=false&name=&element=pure&element=fire&element=wind&element=water&awaken_level=1&order_by="
 
-      // url : ""
     }
   }
-    //TODO: Fetch from database
 
     incFirstFreq(){
       // alert("TouchableTouched");
@@ -162,23 +148,10 @@ class App extends React.Component {
       updateFreq(this.state.firstMonId, this.state.secondMonId, this.state.firstMonFreq, this.state.secondMonFreq+1);
     }
 
-    // setInitFreq(firstRandNum, secondRandNum){
-    //   var freq = getFreq(firstRandNum, secondRandNum)
-            // alert(freq)
-      // if(firstRandNum < secondRandNum){
-      //   this.setState({firstMonFreq: freq[0], secondMonFreq: freq[1]});
-      // }
-      // else{
-      //   this.setState({firstMonFreq: freq[1], secondMonFreq: freq[0]});
-      //   // alert(this.state.firstMonFreq)
-      // }
-    // }
-
     updateMonster(numMon, url){
       const invalidFamily = [19200, 17100, 24600, 23600, 24100, 24200, 24000];
       const invalidIndividuals = [13813, 14511, 21212, 22612];
       //TODO: store back into database
-      // this.setState({firstMonFreq: 0, secondMonFreq: 0})
       var firstRandNum = Math.floor(Math.random() * numMon);
       var secondRandNum = Math.floor(Math.random() * numMon);
       // var firstRandNum = 75;
@@ -186,17 +159,6 @@ class App extends React.Component {
       while(secondRandNum == firstRandNum){
         secondRandNum = Math.floor(Math.random() * numMon);
       }
-
-      // GetInitialFrequency
-      // if(firstRandNum < secondRandNum){
-      //   this.setState({firstMonFreq: freq[0], secondMonFreq: freq[1]});
-      // }
-      // else{
-      //   this.setState({firstMonFreq: freq[1], secondMonFreq: freq[0]});
-      //   // alert(this.state.firstMonFreq)
-      // }
-      // alert(this.state.firstMonFreq)
-      // alert(this.state.secondMonFreq)
 
 
       //TODO: Use database instead of url
@@ -221,7 +183,6 @@ class App extends React.Component {
             this.setState({firstMonFreq : d[1], secondMonFreq: d[0]})
 
           }
-          // alert(JSON.stringify(freq[0]))
           var firstMon = data.results[firstRandNum]
           var secondMon = data.results[secondRandNum]
           this.setState({
@@ -232,62 +193,67 @@ class App extends React.Component {
             secondMonImg: secondMon.image_filename,
             secondMonName: secondMon.name
           });
-          // writeMonsterData(this.state.firstMonID, this.state.firstMonName, this.state.firstMonImg);
-          // alert(randNum)
         });
-        // alert("firstRandNum : " + firstRandNum);
-        // alert("secondRandNum : " + secondRandNum);
       }
 
 
   componentDidMount() {
-    // getFreq(0, 1);
-    // update secondMonID
+    // updateClick();
     // for(var i = 0; i < 97; i++){
     //   for(var j = 0; j < 97; j++){
-    //     writeSecondMon(i,j,0,0);
+    //     writeSecondMon(i, j, 0, 0);
     //   }
     // }
-    // var ref = firebase.database().ref();
-    // ref.on("value", function(snapshot) {
-    //   alert(snapshot.val());
-    // }, function (error) {
-    //   alert("Error: " + error.code);
-    // });
-
     this.updateMonster(this.state.numMon, this.state.monsterPage);
-    // alert(this.state.firstMonFreq)
   }
 
 
   render(){
-
     const {numMon, monsterPage, firstMonFreq, secondMonFreq} = this.state;
+
+    var firstMonPercentage = 0;
+    var secondMonPercentage = 0;
+
+    if(firstMonFreq+secondMonFreq!=0){
+      firstMonPercentage = (firstMonFreq/(firstMonFreq+secondMonFreq)*100).toFixed(2);
+      secondMonPercentage = (secondMonFreq/(firstMonFreq+secondMonFreq)*100).toFixed(2);
+    }
 
     return (
       <View style={styles.container}>
-        <View style = {styles.imageContainer}>
-        <TouchableHighlight
-          onPress = {()=>{this.incFirstFreq()}}>
-          <Image
-            fadeDuration = {1000}
-            source={{
-              uri: "https://swarfarm.com/static/herders/images/monsters/" + this.state.firstMonImg,
-            }}
-            style={{ width: 128, height: 128 }}/>
-          </TouchableHighlight>
-        <Text> vs. </Text>
-        <TouchableHighlight
-          onPress = {()=>{this.incSecondFreq()}}>
-          <Image
-            fadeDuration = {1000}
-            source={{
-              uri: "https://swarfarm.com/static/herders/images/monsters/" + this.state.secondMonImg,
-            }}
-            style={{ width: 128, height: 128 }}/>
-          </TouchableHighlight>
+        <View style = {styles.comparisonContainer}>
+          <View style = {styles.monsterContainer}>
+
+          <TouchableHighlight
+            onPress = {()=>{this.incFirstFreq()}}>
+            <Image
+              fadeDuration = {1000}
+              source={{
+                uri: "https://swarfarm.com/static/herders/images/monsters/" + this.state.firstMonImg,
+              }}
+              style={{ width: 128, height: 128 }}/>
+            </TouchableHighlight>
+            <Text>{firstMonPercentage} %</Text>
+          </View>
+
+          <Text> vs. </Text>
+
+          <View style = {styles.monsterContainer}>
+
+            <TouchableHighlight
+              onPress = {()=>{this.incSecondFreq()}}>
+                <Image
+                fadeDuration = {1000}
+                source={{
+                  uri: "https://swarfarm.com/static/herders/images/monsters/" + this.state.secondMonImg,
+                }}
+                style={{ width: 128, height: 128 }}/>
+            </TouchableHighlight>
+            <Text>{secondMonPercentage} %</Text>
+
+          </View>
         </View>
-        <View style = {styles.imageContainer}>
+        <View style = {styles.comparisonContainer}>
           <Text>{firstMonFreq}</Text>
           <Text> vs. </Text>
           <Text>{secondMonFreq}</Text>
@@ -309,12 +275,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  imageContainer: {
+  comparisonContainer: {
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row'
+  },
+
+  monsterContainer: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'column'
   },
 });
 
